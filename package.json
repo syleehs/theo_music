@@ -14,5 +14,13 @@
   "dependencies": {
     "body-parser": "^1.18.2",
     "express": "^4.16.2"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/syleehs/theo_music.git"
+  },
+  "bugs": {
+    "url": "https://github.com/syleehs/theo_music/issues"
+  },
+  "homepage": "https://github.com/syleehs/theo_music#readme"
 }
