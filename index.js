@@ -64,9 +64,9 @@ app.get('/webhook', (req, res) => {
 /**==================================================================
 Database connection with mongoose
 ===================================================================*/
-var mongoose = require("mongoose");
-var db = mongoose.connect(process.env.MONGODB_URI)
-var Music = require("./models/music")
+// var mongoose = require("mongoose");
+// var db = mongoose.connect(process.env.MONGODB_URI)
+// var Music = require("./models/music")
 
 /**==================================================================
 Postback message processing
@@ -84,7 +84,7 @@ app.post("/webhook", function (req, res) {
           processPostback(event);
         } else if (event.message) {
           processMessage(event);
-        })
+        }
       });
     });
 
