@@ -62,6 +62,13 @@ app.get('/webhook', (req, res) => {
 });
 
 /**==================================================================
+Database connection with mongoose
+===================================================================*/
+var mongoose = require("mongoose");
+var db = mongoose.connect(process.env.MONGODB_URI)
+var Music = require("./models/music")
+
+/**==================================================================
 Postback message processing
 ===================================================================*/
 // All callbacks for Messenger will be POST-ed here
@@ -75,7 +82,9 @@ app.post("/webhook", function (req, res) {
       entry.messaging.forEach(function(event) {
         if (event.postback) {
           processPostback(event);
-        }
+        } else if (event.message) {
+          processMessage(event);
+        })
       });
     });
 
@@ -106,12 +115,34 @@ function processPostback(event) {
         name = bodyObj.first_name;
         greeting = "Hi " + name + ". ";
       }
-      var message = greeting + "My name is SP Movie Bot. I can tell you various details regarding movies. What movie would you like to know about?";
+      var message = greeting + "My name is Theo Music Bot, my purpose is to keep you update about new song releases by your favorite artists! Get started by giving me a name"
       sendMessage(senderId, {text: message});
     });
   }
 }
 
+function processMessage(event) {
+  if (!event.message.is_echo){
+    var message = event.message;
+    var senderId = event.sender.id;
+    console.log("Received message from sender.id: " + senderId)
+    console.log("Message is: " + JSON.stringify(message));
+    // Message processing, attachment processing found below
+    if (message.text) {
+      var formattedMsg = message.text.toLowerCase().trim();
+      switch (formattedMsg) {
+        case "artist":
+        case "album":
+          getArtistDetail(senderId, formattedMsg);
+          break;
+        default:
+          findArtist(senderId, formattedMsg);
+      }
+    } else if (message.attachments) {
+      sendMessage(senderId, {text: "Sorry, I don't support attachments."})
+    }
+  }
+}
 // sends message to user
 function sendMessage(recipientId, message) {
   request({
@@ -125,6 +156,16 @@ function sendMessage(recipientId, message) {
   }, function(error, response, body) {
     if (error) {
       console.log("Error sending message: " + response.error);
+    }
+  });
+}
+
+function getArtistDetail(userId, field) {
+  Music.findOne({user_id: userId}, function(err, music) {
+    if(err) {
+      sendMessage(userId, {text: "Unable to find artist, try again"})
+    } else {
+      sendMessage(userId, {text: music[field]});
     }
   });
 }
