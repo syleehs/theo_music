@@ -10,6 +10,7 @@ const
 app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
 
 // Creates the endpoint for our webhook
+/*
 app.post('/webhook', (req, res) => {
     let body = req.body;
 
@@ -32,7 +33,7 @@ app.post('/webhook', (req, res) => {
     rest.sendStatus(404);
   }
 });
-
+*/
 // Adds support for GET requests to our webhook
 app.get('/webhook', (req, res) => {
 
@@ -61,14 +62,14 @@ app.get('/webhook', (req, res) => {
   }
 });
 
-/**==================================================================
+/*===================================================================
 Database connection with mongoose
 ===================================================================*/
 // var mongoose = require("mongoose");
 // var db = mongoose.connect(process.env.MONGODB_URI)
 // var Music = require("./models/music")
 
-/**==================================================================
+/*===================================================================
 Postback message processing
 ===================================================================*/
 // All callbacks for Messenger will be POST-ed here
@@ -165,6 +166,7 @@ function getArtistDetail(userId, field) {
     if(err) {
       sendMessage(userId, {text: "Unable to find artist, try again"})
     } else {
+      sendMessage(userId, {text: "Attempting to find an artist... "});
       sendMessage(userId, {text: music[field]});
     }
   });
