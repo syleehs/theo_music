@@ -187,7 +187,11 @@ function searchSpotify(formattedMsg, type, cb) {
     if (err) {
       console.log("Error saerching spotify")
     } else {
+<<<<<<< HEAD
       cb = stdout;
+=======
+      return stdout;
+>>>>>>> ddbb4142bbdd7fd7072885b46fa1bdbf9d6bff2f
     }
   });
 }
