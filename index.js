@@ -184,8 +184,9 @@ function searchSpotify(formattedMsg, type) {
 
   exec('curl -X GET' + '\"' + 'https://api.spotify.com/v1/search?q=' + formattedMsg + '&type=' + type +'\"' + '-h', (err, stdout, stderr) => {
     if (err) {
-      return False
+      console.log("Error saerching spotify")
+    } else {
+      return stdout;
     }
-    return stdout
   });
 }
