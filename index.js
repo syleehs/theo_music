@@ -172,20 +172,22 @@ function getArtistDetail(userId, field) {
   });
 }
 function findArtist(senderId, formattedMsg) {
-  var stdout = searchSpotify(formattedMsg, 'artist');
-  var object = JSON.parse(stdout);
+  var cb
+  searchSpotify(formattedMsg, 'artist', cb);
+  var object = JSON.parse(cb);
   var spotifyLink = object.artists.items.external_urls.spotify;
   sendMessage(senderID, {text: "Is this, the correct artist: " + spotifyLink})
 }
 
-function searchSpotify(formattedMsg, type) {
+function searchSpotify(formattedMsg, type, cb) {
   const {exec} = require('child_process');
   var string = '-H \"Accept: application/json\" -H \"Authorization: Bearer BQAjs0Y5Bv3QdbSyQpv68CMu5Y4GuRV-uhSnTUyH9NuyqpSa8adk89mJs5AjxWzPqCC5QCWpxh2CQ6pOLWZ17aMb9nuLsgNFhaCAD85QT_OfTdiCw4owFBGN0xOi0wF-pi49_OtFb_XtfQNgjqTSRwH-mG49eZFBExzzzEQ2KOyyFKx89MKey_oqqsIvlCKtIth1v0N65upZrFBgrvhwy5AnbSoWDKwErTvFhtEgoIDZ1QJzJ9xNQpduAr3e5PV3IvVXRYUMBA7Nuo\"'
 
   exec('curl -X GET' + '\"' + 'https://api.spotify.com/v1/search?q=' + formattedMsg + '&type=' + type +'\"' + '-h', (err, stdout, stderr) => {
     if (err) {
-      return False
+      console.log("Error saerching spotify")
+    } else {
+      cb = stdout;
     }
-    return stdout
   });
 }
