@@ -65,9 +65,9 @@ app.get('/webhook', (req, res) => {
 /*===================================================================
 Database connection with mongoose
 ===================================================================*/
-// var mongoose = require("mongoose");
-// var db = mongoose.connect(process.env.MONGODB_URI)
-// var Music = require("./models/music")
+var mongoose = require("mongoose");
+var db = mongoose.connect(process.env.MONGODB_URI)
+var Music = require("./models/music")
 
 /*===================================================================
 Postback message processing
@@ -126,7 +126,7 @@ function processMessage(event) {
   if (!event.message.is_echo){
     var message = event.message;
     var senderId = event.sender.id;
-    console.log("Received message from sender.id: " + senderId)
+    console.log("Received message from sender.id: " + senderId);
     console.log("Message is: " + JSON.stringify(message));
     // Message processing, attachment processing found below
     if (message.text) {
@@ -164,10 +164,28 @@ function sendMessage(recipientId, message) {
 function getArtistDetail(userId, field) {
   Music.findOne({user_id: userId}, function(err, music) {
     if(err) {
-      sendMessage(userId, {text: "Unable to find artist, try again"})
+      sendMessage(userId, {text: "Unable to find artist, try again"});
     } else {
       sendMessage(userId, {text: "Attempting to find an artist... "});
       sendMessage(userId, {text: music[field]});
     }
+  });
+}
+function findArtist(senderId, formattedMsg) {
+  var stdout = searchSpotify(formattedMsg, 'artist');
+  var object = JSON.parse(stdout);
+  var spotifyLink = object.artists.items.external_urls.spotify;
+  sendMessage(senderID, {text: "Is this, the correct artist: " + spotifyLink})
+}
+
+function searchSpotify(formattedMsg, type) {
+  const {exec} = require('child_process');
+  var string = '-H \"Accept: application/json\" -H \"Authorization: Bearer BQAjs0Y5Bv3QdbSyQpv68CMu5Y4GuRV-uhSnTUyH9NuyqpSa8adk89mJs5AjxWzPqCC5QCWpxh2CQ6pOLWZ17aMb9nuLsgNFhaCAD85QT_OfTdiCw4owFBGN0xOi0wF-pi49_OtFb_XtfQNgjqTSRwH-mG49eZFBExzzzEQ2KOyyFKx89MKey_oqqsIvlCKtIth1v0N65upZrFBgrvhwy5AnbSoWDKwErTvFhtEgoIDZ1QJzJ9xNQpduAr3e5PV3IvVXRYUMBA7Nuo\"'
+
+  exec('curl -X GET' + '\"' + 'https://api.spotify.com/v1/search?q=' + formattedMsg + '&type=' + type +'\"' + '-h', (err, stdout, stderr) => {
+    if (err) {
+      return False
+    }
+    return stdout
   });
 }
