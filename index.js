@@ -181,11 +181,11 @@ function findArtist(senderId, formattedMsg) {
 
 function searchSpotify(formattedMsg, type, cb) {
   const {exec} = require('child_process');
-  var string = '-H \"Accept: application/json\" -H \"Authorization: Bearer BQAjs0Y5Bv3QdbSyQpv68CMu5Y4GuRV-uhSnTUyH9NuyqpSa8adk89mJs5AjxWzPqCC5QCWpxh2CQ6pOLWZ17aMb9nuLsgNFhaCAD85QT_OfTdiCw4owFBGN0xOi0wF-pi49_OtFb_XtfQNgjqTSRwH-mG49eZFBExzzzEQ2KOyyFKx89MKey_oqqsIvlCKtIth1v0N65upZrFBgrvhwy5AnbSoWDKwErTvFhtEgoIDZ1QJzJ9xNQpduAr3e5PV3IvVXRYUMBA7Nuo\"'
+  var oAuth = '-H \"Accept: application/json\" -H \"Authorization: Bearer BQAjs0Y5Bv3QdbSyQpv68CMu5Y4GuRV-uhSnTUyH9NuyqpSa8adk89mJs5AjxWzPqCC5QCWpxh2CQ6pOLWZ17aMb9nuLsgNFhaCAD85QT_OfTdiCw4owFBGN0xOi0wF-pi49_OtFb_XtfQNgjqTSRwH-BQCgYKh0KwIXmBsDPw5MjBa41F8e1LxfhKHa3mCLpKKzhnkInw4rrwl1-CFGG7IBoGYDZEE1F_mi-Gdkxdi1wtNdsvuLM44I_X1jOgpk6JTNzM7D2Kg8OlMKvBZVfYLnMokEVpEw9N9KaSgVMo\"'
 
-  exec('curl -X GET' + '\"' + 'https://api.spotify.com/v1/search?q=' + formattedMsg + '&type=' + type +'\"' + '-h', (err, stdout, stderr) => {
+  exec('curl -X GET' + '\"' + 'https://api.spotify.com/v1/search?q=' + formattedMsg + '&type=' + type +'\" ' + oAuth , (err, stdout, stderr) => {
     if (err) {
-      console.log("Error saerching spotify")
+      console.log("Error searching spotify")
     } else {
       cb = stdout;
     }
