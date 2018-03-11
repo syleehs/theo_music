@@ -175,7 +175,7 @@ function findArtist(senderId, formattedMsg) {
   var cb
   searchSpotify(formattedMsg, 'artist', cb);
   var object = JSON.parse(cb);
-  var spotifyLink = object.artists.items.external_urls.spotify;
+  var spotifyLink = object.spotify;
   sendMessage(senderID, {text: "Is this, the correct artist: " + spotifyLink})
 }
 
