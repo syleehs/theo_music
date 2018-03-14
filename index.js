@@ -81,7 +81,7 @@ app.post("/webhook", function (req, res) {
     // There may be multiple entries if batched
     body.entry.forEach(function(entry) {
       let webhook_event = entry.messaging[0]
-      log.console(webhook_event)
+      console.log(webhook_event)
       // Iterate over each messaging event
       if (entry.messaging)  {
         entry.messaging.forEach(function(event) {
