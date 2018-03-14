@@ -174,7 +174,9 @@ function getArtistDetail(userId, field) {
 function findArtist(senderId, formattedMsg) {
   var cb
   searchSpotify(formattedMsg, 'artist', cb);
+  log.console(cb)
   var object = JSON.parse(cb);
+  log.console(object)
   var spotifyLink = object.spotify;
   sendMessage(senderID, {text: "Is this, the correct artist: " + spotifyLink})
 }
@@ -185,7 +187,7 @@ function searchSpotify(formattedMsg, type, cb) {
   var tool = 'curl -X GET'
   var spotifyLink = '\"' + 'https://api.spotify.com/v1/search?q=' + formattedMsg + '&type=' + type +'\" '
   exec(tool + spotifyLink + oAuth , (err, stdout, stderr) => {
-    console.log(tool + spotifyLink + oAuth)
+    console.log("exec command line: " + tool + spotifyLink + oAuth)
     if (err) {
       console.log("Error searching spotify")
     } else {
