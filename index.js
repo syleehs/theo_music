@@ -181,9 +181,9 @@ function getArtistDetail(userId, field) {
 function findArtist(senderId, formattedMsg) {
   var cb
   searchSpotify(formattedMsg, 'artist', cb);
-  log.console(cb)
+  console.log(cb)
   var object = JSON.parse(cb);
-  log.console(object)
+  console.log(object)
   var spotifyLink = object.spotify;
   sendMessage(senderID, {text: "Is this, the correct artist: " + spotifyLink})
 }
