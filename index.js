@@ -80,7 +80,7 @@ app.post("/webhook", function (req, res) {
     // Iterate over each entry
     // There may be multiple entries if batched
     body.entry.forEach(function(entry) {
-      let webhook_event = entry.messaging(0)
+      let webhook_event = entry.messaging[0]
       log.console(webhook_event)
       // Iterate over each messaging event
       if (entry.messaging)  {
@@ -95,6 +95,8 @@ app.post("/webhook", function (req, res) {
     });
 
     res.sendStatus(200);
+  } else {
+    res.sendStatus(404);
   }
 });
 
